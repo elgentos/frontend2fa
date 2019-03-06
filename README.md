@@ -28,6 +28,10 @@ Setup page (in My Account)
 
 ![image](https://user-images.githubusercontent.com/431360/53883181-98e44400-4018-11e9-8bc0-d98676e3527a.png)
 
+Configuration in backend
+
+![image](https://user-images.githubusercontent.com/431360/53885104-3b9ec180-401d-11e9-98bc-ec1a2df3fa6c.png)
+
 2FA reset button in backend
 
 ![image](https://user-images.githubusercontent.com/431360/53883268-ce892d00-4018-11e9-84f6-aa1c0fc2e34a.png)
