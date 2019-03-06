@@ -22,3 +22,7 @@ Setup page (in My Account)
 
 ![image](https://user-images.githubusercontent.com/431360/53883268-ce892d00-4018-11e9-84f6-aa1c0fc2e34a.png)
 
+## License
+
+This project is licensed under the MIT License
+
