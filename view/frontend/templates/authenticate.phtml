@@ -1,0 +1,33 @@
+<div class="login-container">
+    <?php if($block->is2faConfiguredForCustomer()): ?>
+        <div class="block block-customer-login" style="width: 100%">
+            <div class="block-content">
+                <div class="block block-customer-login" style="width: 48%">
+                    <p><?php echo __('Open your 2FA app (for example Google Authenticator or Authy) and enter the 6-digit code to log in.'); ?></p>
+                    <div class="block-content">
+                        <form class="form contact" action="<?php /* @escapeNotVerified */ echo $block->getAuthenticateFormAction(); ?>" method="post" data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>">
+                            <input type="hidden" name="secret" value="<?php /* @escapeNotVerified */ echo $block->getSecretCode(); ?>" />
+                            <fieldset class="fieldset">
+                                <div class="field name required">
+                                    <label class="label" for="code"><span><?php /* @escapeNotVerified */ echo __('Authentication Code') ?></span></label>
+                                    <div class="control">
+                                        <input name="code" id="code" title="<?php /* @escapeNotVerified */ echo __('Authentication Code') ?>" value="" class="input-text" type="text" data-validate="{required:true}"/>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="actions-toolbar">
+                                <div class="primary">
+                                    <button type="submit" title="<?php /* @escapeNotVerified */ echo __('Authenticate') ?>" class="action submit primary">
+                                        <span><?php /* @escapeNotVerified */ echo __('Authenticate') ?></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php else: ?>
+        <p>You shouldn't be here.</p>
+    <?php endif; ?>
+</div>
