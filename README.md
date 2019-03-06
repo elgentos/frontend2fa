@@ -8,6 +8,15 @@ This extension is based on [Neyamtux_Authenticator](https://github.com/juashyam/
 - Open the customer in the backend to be able to reset the 2FA secret;
 - Dutch translation files.
 
+## Installation
+
+```
+composer config repositories.neyamtux-authenticator vcs git@github.com:juashyam/2-Factor-Authentication.git
+composer require elgentos/frontend2fa
+php bin/magento module:enable Elgentos_Frontend2FA
+php bin/magento setup:upgrade
+```
+
 ## Screenshots
 
 Setup page (in My Account)
