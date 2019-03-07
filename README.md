@@ -10,9 +10,12 @@ This extension is based on [Neyamtux_Authenticator](https://github.com/juashyam/
 
 ## Installation
 
-First install & enable [Neyamtux_Authenticator](https://github.com/juashyam/2-Factor-Authentication/) (unfortunately not available through composer).
+First install & enable [Neyamtux_Authenticator](https://github.com/juashyam/2-Factor-Authentication/).
 
 ```
+composer require juashyam/authenticator
+php bin/magento module:enable Neyamtux_Authenticator
+
 composer require elgentos/frontend2fa
 php bin/magento module:enable Elgentos_Frontend2FA
 php bin/magento setup:upgrade
