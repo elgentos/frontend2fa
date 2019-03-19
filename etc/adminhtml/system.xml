@@ -15,11 +15,11 @@
                     <label>Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="enable_groups" translate="label" type="multiselect" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="forced_groups" translate="label" type="multiselect" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <depends>
                         <field id="enable">1</field>
                     </depends>
-                    <label>Enable 2FA for Customer Groups</label>
+                    <label>Force 2FA for Customer Groups</label>
                     <source_model>Magento\Customer\Model\Config\Source\Group</source_model>
                 </field>
             </group>

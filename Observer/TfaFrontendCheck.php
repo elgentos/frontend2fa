@@ -13,7 +13,7 @@ use Magento\Framework\UrlInterface;
 class TfaFrontendCheck implements ObserverInterface {
 
     const ELGENTOS_AUTHENTICATOR_GENERAL_ENABLE = 'elgentos_authenticator/general/enable';
-    const ELGENTOS_AUTHENTICATOR_GENERAL_ENABLE_GROUPS = 'elgentos_authenticator/general/enable_groups';
+    const ELGENTOS_AUTHENTICATOR_GENERAL_FORCED_GROUPS = 'elgentos_authenticator/general/forced_groups';
 
     const FRONTEND_2_FA_ACCOUNT_SETUP_ROUTE = 'elgentos_frontend2fa_frontend_route_account_setup';
     const FRONTEND_2_FA_ACCOUNT_AUTHENTICATE_ROUTE = 'elgentos_frontend2fa_frontend_route_account_authenticate';
@@ -96,15 +96,11 @@ class TfaFrontendCheck implements ObserverInterface {
             return $this;
         }
 
-        if (!$this->isCustomerInEnabled2faGroup($customer)) {
-            return $this;
-        }
-
         if ($this->is2faConfiguredForCustomer($customer)) {
             // Redirect to 2FA authentication page
             $redirectionUrl = $this->url->getUrl(self::FRONTEND_2_FA_ACCOUNT_AUTHENTICATE_PATH);
             $this->redirect->setRedirect($redirectionUrl);
-        } else {
+        } elseif ($this->isCustomerInForced2faGroup($customer)) {
             // Redirect to 2FA setup page
             $this->messageManager->addNoticeMessage(__('You need to set up Two Factor Authentication before continuing.'));
             $redirectionUrl = $this->url->getUrl(self::FRONTEND_2_FA_ACCOUNT_SETUP_PATH);
@@ -117,19 +113,19 @@ class TfaFrontendCheck implements ObserverInterface {
     /**
      * @return array
      */
-    public function getEnabledCustomerGroups()
+    public function getForced2faCustomerGroups()
     {
-        $enabledForCustomerGroups = $this->config->getValue(self::ELGENTOS_AUTHENTICATOR_GENERAL_ENABLE_GROUPS);
-        return array_filter(array_map('trim', explode(',', $enabledForCustomerGroups)));
+        $forced2faCustomerGroups = $this->config->getValue(self::ELGENTOS_AUTHENTICATOR_GENERAL_FORCED_GROUPS);
+        return array_filter(array_map('trim', explode(',', $forced2faCustomerGroups)));
     }
 
     /**
      * @param \Magento\Customer\Model\Customer $customer
      * @return bool
      */
-    public function isCustomerInEnabled2faGroup(\Magento\Customer\Model\Customer $customer)
+    public function isCustomerInForced2faGroup(\Magento\Customer\Model\Customer $customer)
     {
-        return in_array($customer->getGroupId(), $this->getEnabledCustomerGroups());
+        return in_array($customer->getGroupId(), $this->getForced2faCustomerGroups());
     }
 
     /**
