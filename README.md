@@ -3,21 +3,18 @@
 This extension is based on [Neyamtux_Authenticator](https://github.com/juashyam/2-Factor-Authentication/), which offers 2FA for the backend.
 
 ## Features
-- Ability to enable frontend 2FA for specific customer groups;
-- 2FA is enforced meaning the customer has to either setup or authenticate before continuing after logging in;
+- Ability to force frontend 2FA for specific customer groups;
+- 2FA is enforced for chosen customer groups meaning the customer has to either setup or authenticate before continuing after logging in;
+- All customers in any group can optionally set their own 2FA;
 - Open the customer in the backend to be able to reset the 2FA secret;
 - Dutch translation files.
 
 ## Installation
 
-First install & enable [Neyamtux_Authenticator](https://github.com/juashyam/2-Factor-Authentication/).
-
 ```
-composer require juashyam/authenticator
-php bin/magento module:enable Neyamtux_Authenticator
-
 composer require elgentos/frontend2fa
 php bin/magento module:enable Elgentos_Frontend2FA
+php bin/magento module:enable Neyamtux_Authenticator
 php bin/magento setup:upgrade
 ```
 
