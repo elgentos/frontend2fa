@@ -8,6 +8,7 @@
 
 namespace Elgentos\Frontend2FA\Block;
 
+use Elgentos\Frontend2FA\Model\GoogleAuthenticatorService;
 use Elgentos\Frontend2FA\Observer\TfaFrontendCheck;
 use Magento\Catalog\Model\Session as CatalogSession;
 use Magento\Customer\Model\Session;
@@ -31,6 +32,11 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
     public $storeManager;
 
     /**
+     * @var GoogleAuthenticatorService
+     */
+    public $googleAuthenticatorService;
+
+    /**
      * Authenticator constructor.
      * @param Context $context
      * @param GoogleAuthenticator $googleAuthenticator
@@ -43,6 +49,7 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
     public function __construct(
         Context $context,
         GoogleAuthenticator $googleAuthenticator,
+        GoogleAuthenticatorService $googleAuthenticatorService,
         CatalogSession $session,
         TfaFrontendCheck $observer,
         Session $customerSession,
@@ -50,6 +57,7 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
         array $data = []
     ) {
         parent::__construct($context, $googleAuthenticator, $session, $data);
+        $this->googleAuthenticatorService = $googleAuthenticatorService;
         $this->observer = $observer;
         $this->customerSession = $customerSession;
         $this->storeManager = $storeManager;
@@ -59,9 +67,10 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
      * @return string
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getQRCodeUrl()
+    public function getQrCodeBase64Image()
     {
-        return $this->_googleAuthenticator->getQRCodeGoogleUrl($this->storeManager->getWebsite()->getName() . ' 2FA Login', $this->_googleSecret);
+        $imageData = base64_encode($this->googleAuthenticatorService->getQrCodeEndroid($this->storeManager->getWebsite()->getName() . ' 2FA Login', $this->_googleSecret));
+        return 'data:image/png;base64,'.$imageData;
     }
 
     /**

@@ -6,7 +6,7 @@
         </div>
     </div>
     <?php else: ?>
-    <img src="<?php /* @escapeNotVerified */ echo $block->getQRCodeUrl(); ?>" alt="2FA Authenticator">
+    <img src="<?php /* @escapeNotVerified */ echo $block->getQrCodeBase64Image(); ?>" alt="2FA Authenticator">
     <div class="block block-customer-login" style="width: 48%">
         <p><?php echo __('Download a 2FA app on your phone to scan the QR code and get the authentication code, for example Google Authenticator or Authy.'); ?></p>
         <div class="block-content">
