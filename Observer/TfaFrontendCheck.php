@@ -10,8 +10,8 @@ use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\UrlInterface;
 
-class TfaFrontendCheck implements ObserverInterface {
-
+class TfaFrontendCheck implements ObserverInterface
+{
     const ELGENTOS_AUTHENTICATOR_GENERAL_ENABLE = 'elgentos_authenticator/general/enable';
     const ELGENTOS_AUTHENTICATOR_GENERAL_FORCED_GROUPS = 'elgentos_authenticator/general/forced_groups';
 
@@ -49,11 +49,12 @@ class TfaFrontendCheck implements ObserverInterface {
 
     /**
      * TfaFrontendCheck constructor.
-     * @param ScopeConfigInterface $config
-     * @param Http $redirect
-     * @param SecretFactory $secretFactory
-     * @param Session $customerSession
-     * @param UrlInterface $url
+     *
+     * @param ScopeConfigInterface                        $config
+     * @param Http                                        $redirect
+     * @param SecretFactory                               $secretFactory
+     * @param Session                                     $customerSession
+     * @param UrlInterface                                $url
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      */
     public function __construct(
@@ -74,6 +75,7 @@ class TfaFrontendCheck implements ObserverInterface {
 
     /**
      * @param \Magento\Framework\Event\Observer $observer
+     *
      * @return $this
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -88,7 +90,7 @@ class TfaFrontendCheck implements ObserverInterface {
 
         /** @var \Magento\Customer\Model\Customer $customer */
         $customer = $this->customerSession->getCustomer();
-        if (!$customer->getId() || !$this->customerSession->isLoggedIn())  {
+        if (!$customer->getId() || !$this->customerSession->isLoggedIn()) {
             return $this;
         }
 
@@ -116,11 +118,13 @@ class TfaFrontendCheck implements ObserverInterface {
     public function getForced2faCustomerGroups()
     {
         $forced2faCustomerGroups = $this->config->getValue(self::ELGENTOS_AUTHENTICATOR_GENERAL_FORCED_GROUPS);
+
         return array_filter(array_map('trim', explode(',', $forced2faCustomerGroups)));
     }
 
     /**
      * @param \Magento\Customer\Model\Customer $customer
+     *
      * @return bool
      */
     public function isCustomerInForced2faGroup(\Magento\Customer\Model\Customer $customer)
@@ -130,6 +134,7 @@ class TfaFrontendCheck implements ObserverInterface {
 
     /**
      * @param \Magento\Customer\Model\Customer $customer
+     *
      * @return bool
      */
     public function is2faConfiguredForCustomer(\Magento\Customer\Model\Customer $customer)
@@ -155,5 +160,4 @@ class TfaFrontendCheck implements ObserverInterface {
 
         return $routes;
     }
-
 }

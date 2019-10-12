@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: peterjaap
  * Date: 5-3-19
- * Time: 13:36
+ * Time: 13:36.
  */
 
 namespace Elgentos\Frontend2FA\Block;
@@ -38,13 +38,14 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
 
     /**
      * Authenticator constructor.
-     * @param Context $context
-     * @param GoogleAuthenticator $googleAuthenticator
-     * @param CatalogSession $session
-     * @param TfaFrontendCheck $observer
-     * @param Session $customerSession
+     *
+     * @param Context               $context
+     * @param GoogleAuthenticator   $googleAuthenticator
+     * @param CatalogSession        $session
+     * @param TfaFrontendCheck      $observer
+     * @param Session               $customerSession
      * @param StoreManagerInterface $storeManager
-     * @param array $data
+     * @param array                 $data
      */
     public function __construct(
         Context $context,
@@ -64,19 +65,21 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
     }
 
     /**
-     * @return string
      * @throws \Magento\Framework\Exception\NoSuchEntityException
+     *
+     * @return string
      */
     public function getQrCodeBase64Image()
     {
         // Replace non-alphanumeric characters with dashes; Google Authenticator does not like spaces in the title
-        $title = preg_replace('/[^a-z0-9]+/i', '-', $this->storeManager->getWebsite()->getName() . ' 2FA Login');
+        $title = preg_replace('/[^a-z0-9]+/i', '-', $this->storeManager->getWebsite()->getName().' 2FA Login');
         $imageData = base64_encode($this->googleAuthenticatorService->getQrCodeEndroid($title, $this->_googleSecret));
+
         return 'data:image/png;base64,'.$imageData;
     }
 
     /**
-     * Returns action url for authentication form
+     * Returns action url for authentication form.
      *
      * @return string
      */
@@ -86,7 +89,7 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
     }
 
     /**
-     * Returns action url for authentication form
+     * Returns action url for authentication form.
      *
      * @return string
      */
@@ -97,6 +100,7 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
 
     /**
      * @param null $customer
+     *
      * @return bool
      */
     public function is2faConfiguredForCustomer($customer = null)
@@ -104,6 +108,7 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
         if ($customer === null) {
             $customer = $this->customerSession->getCustomer();
         }
+
         return $this->observer->is2faConfiguredForCustomer($customer);
     }
 }

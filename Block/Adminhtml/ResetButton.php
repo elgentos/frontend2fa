@@ -17,10 +17,11 @@ class ResetButton extends GenericButton implements ButtonProviderInterface
 
     /**
      * ResetButton constructor.
+     *
      * @param \Magento\Backend\Block\Widget\Context $context
-     * @param \Magento\Framework\Registry $registry
-     * @param UrlInterface $urlBuilder
-     * @param SecretFactory $secretFactory
+     * @param \Magento\Framework\Registry           $registry
+     * @param UrlInterface                          $urlBuilder
+     * @param SecretFactory                         $secretFactory
      */
     public function __construct(
         \Magento\Backend\Block\Widget\Context $context,
@@ -43,12 +44,12 @@ class ResetButton extends GenericButton implements ButtonProviderInterface
 
         if ($secret->getId()) {
             $url = $this->urlBuilder->getUrl(self::ADMIN_AUTHENTICATOR_RESET_PATH, [
-                'customer_id' => $this->getCustomerId()
+                'customer_id' => $this->getCustomerId(),
             ]);
             $data = [
-                'label' => __('Reset frontend 2FA'),
-                'on_click' => sprintf('location.href = "%s";', $url),
-                'class' => 'add',
+                'label'      => __('Reset frontend 2FA'),
+                'on_click'   => sprintf('location.href = "%s";', $url),
+                'class'      => 'add',
                 'sort_order' => 40,
             ];
         }

@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
@@ -25,9 +24,9 @@ class Setup extends \Magento\Framework\App\Action\Action
     protected $_layoutFactory;
 
     /**
-     * @param Context $context
+     * @param Context       $context
      * @param LayoutFactory $layoutFactory
-     * @param Session $customerSession
+     * @param Session       $customerSession
      * @param SecretFactory $secretFactory
      */
     public function __construct(
@@ -44,8 +43,10 @@ class Setup extends \Magento\Framework\App\Action\Action
 
     /**
      * @param RequestInterface $request
-     * @return \Magento\Framework\App\ResponseInterface
+     *
      * @throws \Magento\Framework\Exception\NotFoundException
+     *
+     * @return \Magento\Framework\App\ResponseInterface
      */
     public function dispatch(RequestInterface $request)
     {
@@ -54,12 +55,14 @@ class Setup extends \Magento\Framework\App\Action\Action
         if (!$this->_customerSession->authenticate($loginUrl)) {
             $this->_actionFlag->set('', self::FLAG_NO_DISPATCH, true);
         }
+
         return parent::dispatch($request);
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
      * @throws \Exception
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
      */
     public function execute()
     {
@@ -74,7 +77,7 @@ class Setup extends \Magento\Framework\App\Action\Action
                 $this->messageManager->addSuccessMessage(__('2FA successfully set up'));
                 $this->secretFactory->create()->setData([
                     'customer_id' => $this->_customerSession->getCustomerId(),
-                    'secret' => $authenticator->getSecretCode()
+                    'secret'      => $authenticator->getSecretCode(),
                 ])->save();
                 $this->_customerSession->set2faSuccessful(true);
                 $this->_redirect('customer/account');
@@ -84,6 +87,7 @@ class Setup extends \Magento\Framework\App\Action\Action
                 );
                 $this->_redirect('frontend2fa/account/setup');
             }
+
             return;
         }
     }
