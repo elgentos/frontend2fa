@@ -20,7 +20,6 @@ class InstallSchema implements InstallSchemaInterface
      */
     public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
-
         $installer = $setup;
 
         $installer->startSetup();
@@ -35,7 +34,7 @@ class InstallSchema implements InstallSchemaInterface
                 'identity' => true,
                 'unsigned' => true,
                 'nullable' => false,
-                'primary' => true
+                'primary'  => true,
             ],
             'Secret Id'
         )->addColumn(
@@ -43,7 +42,7 @@ class InstallSchema implements InstallSchemaInterface
             \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
             null,
             [
-                'unsigned' => true
+                'unsigned' => true,
             ],
             'Customer Id'
         )->addColumn(
@@ -52,8 +51,8 @@ class InstallSchema implements InstallSchemaInterface
             null,
             [
                 'nullable' => false,
-                'comment' => 'Secret',
-                'default' => ''
+                'comment'  => 'Secret',
+                'default'  => '',
             ]
         )->addForeignKey(
             $installer->getFkName('elgentos_frontend2fa_secrets', 'customer_id', 'customer_entity', 'entity_id'),
@@ -69,4 +68,3 @@ class InstallSchema implements InstallSchemaInterface
         $installer->endSetup();
     }
 }
-

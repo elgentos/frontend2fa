@@ -14,8 +14,9 @@ class Reset extends \Magento\Backend\App\Action
 
     /**
      * Reset constructor.
+     *
      * @param Action\Context $context
-     * @param SecretFactory $secretFactory
+     * @param SecretFactory  $secretFactory
      */
     public function __construct(
         Action\Context $context,
@@ -37,5 +38,4 @@ class Reset extends \Magento\Backend\App\Action
         }
         $this->_redirect('customer/index/edit', ['id' => $customerId]);
     }
-
 }

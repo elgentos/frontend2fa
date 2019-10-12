@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
@@ -28,10 +27,10 @@ class Authenticate extends \Magento\Framework\App\Action\Action
     protected $_customerSession;
 
     /**
-     * @param \Magento\Framework\App\Action\Context $context
-     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Framework\App\Action\Context                      $context
+     * @param \Magento\Customer\Model\Session                            $customerSession
      * @param \Neyamtux\Authenticator\Lib\PHPGangsta\GoogleAuthenticator $googleAuthenticator
-     * @param SecretFactory $secretFactory
+     * @param SecretFactory                                              $secretFactory
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -47,8 +46,10 @@ class Authenticate extends \Magento\Framework\App\Action\Action
 
     /**
      * @param RequestInterface $request
-     * @return \Magento\Framework\App\ResponseInterface
+     *
      * @throws \Magento\Framework\Exception\NotFoundException
+     *
+     * @return \Magento\Framework\App\ResponseInterface
      */
     public function dispatch(RequestInterface $request)
     {
@@ -57,6 +58,7 @@ class Authenticate extends \Magento\Framework\App\Action\Action
         if (!$this->_customerSession->authenticate($loginUrl)) {
             $this->_actionFlag->set('', self::FLAG_NO_DISPATCH, true);
         }
+
         return parent::dispatch($request);
     }
 
@@ -84,13 +86,13 @@ class Authenticate extends \Magento\Framework\App\Action\Action
         }
     }
 
-
     /**
-     * Authenticates QR code
+     * Authenticates QR code.
      *
      * @param $secret
      * @param $code
      * @param int $clockTolerance
+     *
      * @return string
      */
     private function _authenticateQRCode($secret, $code, $clockTolerance = 2)
