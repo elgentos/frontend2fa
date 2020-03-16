@@ -80,7 +80,7 @@ class TfaFrontendCheck implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        if (!$this->config->getValue(self::ELGENTOS_AUTHENTICATOR_GENERAL_ENABLE)) {
+        if (!$this->config->getValue(self::ELGENTOS_AUTHENTICATOR_GENERAL_ENABLE, \Magento\Store\Model\ScopeInterface::SCOPE_STORE)) {
             return $this;
         }
 
@@ -117,7 +117,7 @@ class TfaFrontendCheck implements ObserverInterface
      */
     public function getForced2faCustomerGroups()
     {
-        $forced2faCustomerGroups = $this->config->getValue(self::ELGENTOS_AUTHENTICATOR_GENERAL_FORCED_GROUPS);
+        $forced2faCustomerGroups = $this->config->getValue(self::ELGENTOS_AUTHENTICATOR_GENERAL_FORCED_GROUPS, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
 
         return array_filter(array_map('trim', explode(',', $forced2faCustomerGroups)));
     }
