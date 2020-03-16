@@ -18,6 +18,16 @@ php bin/magento module:enable Neyamtux_Authenticator
 php bin/magento setup:upgrade
 ```
 
+## Integration with other authentication systems
+
+To bypass the 2FA requirement for a specific logged in user, for example if you are using a Single Sign-On system for certain users,
+set this value in their customer session:
+
+
+```
+$customerSession->set2faSuccessful(true);
+```
+
 ## Screenshots
 
 Setup page (in My Account)
