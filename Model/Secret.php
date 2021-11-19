@@ -13,7 +13,7 @@ use Elgentos\Frontend2FA\Model\ResourceModel\Secret\Collection as SecretCollecti
 
 /**
  * @method SecretResourceModel getResource()
- * @method SecretCollection getCollection()
+ * @method SecretCollection    getCollection()
  */
 class Secret extends \Magento\Framework\Model\AbstractModel implements
     \Elgentos\Frontend2FA\Api\Data\SecretInterface,
