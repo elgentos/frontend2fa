@@ -32,9 +32,8 @@ class GoogleAuthenticatorService extends \Neyamtux\Authenticator\Lib\PHPGangsta\
         $qrCode->setMargin(0);
         $qrCode->setEncoding(new Encoding('UTF-8'));
         $qrCode->setSize($size);
-        $qrCode->setText($text);
 
         $writer = new PngWriter();
-        return $writer->write($qrCode)->getString()
+        return $writer->write($qrCode)->getString();
     }
 }
