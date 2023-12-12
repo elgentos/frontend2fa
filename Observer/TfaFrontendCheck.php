@@ -18,6 +18,7 @@ class TfaFrontendCheck implements ObserverInterface
     const FRONTEND_2_FA_ACCOUNT_SETUP_ROUTE = 'elgentos_frontend2fa_frontend_route_account_setup';
     const FRONTEND_2_FA_ACCOUNT_AUTHENTICATE_ROUTE = 'elgentos_frontend2fa_frontend_route_account_authenticate';
     const CUSTOMER_ACCOUNT_LOGOUT_ROUTE = 'customer_account_logout';
+    const CUSTOMER_LOAD_SECTION = 'customer_section_load';
 
     const FRONTEND_2_FA_ACCOUNT_SETUP_PATH = 'frontend2fa/account/setup';
     const FRONTEND_2_FA_ACCOUNT_AUTHENTICATE_PATH = 'frontend2fa/account/authenticate';
@@ -109,6 +110,10 @@ class TfaFrontendCheck implements ObserverInterface
             $this->redirect->setRedirect($redirectionUrl);
         }
 
+        if (!$this->customerSession->getBefore2faUrl(false)) {
+            $this->customerSession->setBefore2faUrl($this->url->getUrl('*/*/*'));
+        }
+
         return $this;
     }
 
@@ -155,8 +160,10 @@ class TfaFrontendCheck implements ObserverInterface
         } else {
             $routes = [self::FRONTEND_2_FA_ACCOUNT_SETUP_ROUTE];
         }
+
         // Customer should always be able to log out
         $routes[] = self::CUSTOMER_ACCOUNT_LOGOUT_ROUTE;
+        $routes[] = self::CUSTOMER_LOAD_SECTION;
 
         return $routes;
     }
