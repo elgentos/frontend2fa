@@ -110,8 +110,9 @@ class TfaFrontendCheck implements ObserverInterface
             $this->redirect->setRedirect($redirectionUrl);
         }
 
-        if (!$this->customerSession->getBefore2faUrl(false)) {
-            $this->customerSession->setBefore2faUrl($this->url->getUrl('*/*/*'));
+        $currentPage = $this->url->getUrl('*/*/*');
+        if ($currentPage && str_contains($currentPage, 'checkout')) {
+            $this->customerSession->setBefore2faUrl($currentPage);
         }
 
         return $this;
