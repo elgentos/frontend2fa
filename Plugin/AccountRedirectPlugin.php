@@ -18,9 +18,9 @@ class AccountRedirectPlugin
     {
     }
 
-    public function afterGetRedirectCookie(Redirect $subject, string $result): string
+    public function afterGetRedirectCookie(Redirect $subject, ?string $result): ?string
     {
-        if (!$this->customerSession->getBefore2faUrl(false)) {
+        if ($result && !$this->customerSession->getBefore2faUrl(false)) {
             $this->customerSession->setBefore2faUrl($result);
         }
 
