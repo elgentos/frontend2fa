@@ -72,7 +72,11 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
     public function getQrCodeBase64Image()
     {
         // Replace non-alphanumeric characters with dashes; Google Authenticator does not like spaces in the title
-        $title = preg_replace('/[^a-z0-9]+/i', '-', $this->storeManager->getWebsite()->getName().' 2FA Login');
+        $title = sprintf("%s %s: %s",
+            $this->storeManager->getWebsite()->getName(),
+            '2FA',
+            $this->customerSession->getCustomer()->getEmail()
+        );
         $imageData = base64_encode($this->googleAuthenticatorService->getQrCodeEndroid($title, $this->_googleSecret));
 
         return 'data:image/png;base64,'.$imageData;
