@@ -21,12 +21,9 @@
                     </div>
                 </fieldset>
                 <div class="actions-toolbar">
-
                     <div class="primary">
-                        <button class="primary" title="<?php /* @escapeNotVerified */ echo __('Cancel') ?>" class="action primary">
-                            <a href="/customer/account">
-                                <span><?php /* @escapeNotVerified */ echo __('Cancel') ?></span>
-                            </a>
+                        <button type="reset" title="<?php /* @escapeNotVerified */ echo __('Cancel') ?>" onclick="location.href='<?=$escaper->escapeUrl($block->getCancelSetupUrl())?>'" class="action">
+                            <span><?php /* @escapeNotVerified */ echo __('Cancel') ?></span>
                         </button>
                     </div>
 
@@ -35,6 +32,7 @@
                             <span><?php /* @escapeNotVerified */ echo __('Authenticate') ?></span>
                         </button>
                     </div>
+
                 </div>
             </form>
         </div>
