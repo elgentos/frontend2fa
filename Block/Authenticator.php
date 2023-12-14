@@ -115,4 +115,8 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
 
         return $this->observer->is2faConfiguredForCustomer($customer);
     }
+
+    public function getCancelSetupUrl(){
+        return '/customer/account/';
+    }
 }
