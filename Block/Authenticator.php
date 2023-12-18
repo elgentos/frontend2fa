@@ -8,6 +8,7 @@
 
 namespace Elgentos\Frontend2FA\Block;
 
+use Elgentos\Frontend2FA\Api\ConfigInterface;
 use Elgentos\Frontend2FA\Model\GoogleAuthenticatorService;
 use Elgentos\Frontend2FA\Observer\TfaFrontendCheck;
 use Magento\Catalog\Model\Session as CatalogSession;
@@ -55,6 +56,7 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
         TfaFrontendCheck $observer,
         Session $customerSession,
         StoreManagerInterface $storeManager,
+        private readonly ConfigInterface $config,
         array $data = []
     ) {
         parent::__construct($context, $googleAuthenticator, $session, $data);
@@ -118,5 +120,13 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
 
     public function getCancelSetupUrl(){
         return '/customer/account/';
+    }
+
+    public function isInForcedGroup(): bool {
+        $customer = $this->customerSession->getCustomer();
+        return in_array(
+            $customer->getGroupId(),
+            $this->config->getForced2faCustomerGroups()
+        );
     }
 }
