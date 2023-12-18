@@ -21,11 +21,13 @@
                     </div>
                 </fieldset>
                 <div class="actions-toolbar">
+                    <?php if(!$block->isInForcedGroup()): ?>
                     <div style="margin-right: 5px;" class="primary">
                         <button type="reset" title="<?php /* @escapeNotVerified */ echo __('Cancel') ?>" onclick="location.href='<?=$escaper->escapeUrl($block->getCancelSetupUrl())?>'" class="action">
                             <span><?php /* @escapeNotVerified */ echo __('Cancel') ?></span>
                         </button>
                     </div>
+                    <?php endif; ?>
 
                     <div class="primary">
                         <button type="submit" title="<?php /* @escapeNotVerified */ echo __('Authenticate') ?>" class="action submit primary">
