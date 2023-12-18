@@ -60,7 +60,6 @@ class TfaFrontendCheck implements ObserverInterface
         UrlInterface $url,
         \Magento\Framework\Message\ManagerInterface $messageManager
     ) {
-        $this->config = $config;
         $this->url = $url;
         $this->redirect = $redirect;
         $this->secretFactory = $secretFactory;
