@@ -118,8 +118,14 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
         return $this->observer->is2faConfiguredForCustomer($customer);
     }
 
-    public function getCancelSetupUrl(){
+    public function getCancelSetupUrl()
+    {
         return '/customer/account/';
+    }
+
+    public function getCancel2faUrl()
+    {
+        return '/customer/account/logout/';
     }
 
     public function isInForcedGroup(): bool {
