@@ -94,7 +94,7 @@ class TfaFrontendCheck implements ObserverInterface
             return $this;
         }
         $this->logger->info('TfaFrontendCheck isLoggedIn true');
-        if (in_array($this->request->getFullActionName(), $this->getAllowedRoutes($customer))) {
+        if (in_array($observer->getEvent()->getRequest()->getFullActionName(), $this->getAllowedRoutes($customer))) {
             $this->logger->info('TfaFrontendCheck getAllowedRoutes true');
             return $this;
         }
@@ -108,19 +108,13 @@ class TfaFrontendCheck implements ObserverInterface
             // Redirect to 2FA authentication page
             $redirectionUrl = $this->url->getUrl(self::FRONTEND_2_FA_ACCOUNT_AUTHENTICATE_PATH);
             $this->logger->info('TfaFrontendCheck is2faConfiguredForCustomer redirect',[$redirectionUrl]);
-            $this->redirect->setRedirect($redirectionUrl);
-
-            return;
+            $observer->getControllerAction()->getResponse()->setRedirect($redirectionUrl);
         } elseif ($this->isCustomerInForced2faGroup($customer)) {
             // Redirect to 2FA setup page
             $this->messageManager->addNoticeMessage(__('You need to set up Two Factor Authentication before continuing.'));
             $redirectionUrl = $this->url->getUrl(self::FRONTEND_2_FA_ACCOUNT_SETUP_PATH);
-            $this->redirect->setRedirect($redirectionUrl);
-
-            return;
+            $observer->getControllerAction()->getResponse()->setRedirect($redirectionUrl);
         }
-
-
 
         return $this;
     }
