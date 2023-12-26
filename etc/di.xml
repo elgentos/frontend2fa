@@ -3,4 +3,6 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Elgentos\Frontend2FA\Api\ConfigInterface"
                 type="Elgentos\Frontend2FA\Model\Config" />
+    <preference for="Elgentos\Frontend2FA\Api\TfaCheckInterface"
+                type="Elgentos\Frontend2FA\Model\TfaCheck" />
 </config>

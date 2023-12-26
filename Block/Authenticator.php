@@ -9,8 +9,8 @@
 namespace Elgentos\Frontend2FA\Block;
 
 use Elgentos\Frontend2FA\Api\ConfigInterface;
+use Elgentos\Frontend2FA\Api\TfaCheckInterface;
 use Elgentos\Frontend2FA\Model\GoogleAuthenticatorService;
-use Elgentos\Frontend2FA\Observer\TfaFrontendCheck;
 use Magento\Catalog\Model\Session as CatalogSession;
 use Magento\Customer\Model\Session;
 use Magento\Framework\View\Element\Template\Context;
@@ -19,10 +19,6 @@ use Neyamtux\Authenticator\Lib\PHPGangsta\GoogleAuthenticator;
 
 class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
 {
-    /**
-     * @var TfaFrontendCheck
-     */
-    public $observer;
     /**
      * @var Session
      */
@@ -43,7 +39,7 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
      * @param Context               $context
      * @param GoogleAuthenticator   $googleAuthenticator
      * @param CatalogSession        $session
-     * @param TfaFrontendCheck      $observer
+     * @param TfaCheckInterface     $tfaCheck
      * @param Session               $customerSession
      * @param StoreManagerInterface $storeManager
      * @param array                 $data
@@ -53,7 +49,7 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
         GoogleAuthenticator $googleAuthenticator,
         GoogleAuthenticatorService $googleAuthenticatorService,
         CatalogSession $session,
-        TfaFrontendCheck $observer,
+        private readonly TfaCheckInterface $tfaCheck,
         Session $customerSession,
         StoreManagerInterface $storeManager,
         private readonly ConfigInterface $config,
@@ -61,7 +57,6 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
     ) {
         parent::__construct($context, $googleAuthenticator, $session, $data);
         $this->googleAuthenticatorService = $googleAuthenticatorService;
-        $this->observer = $observer;
         $this->customerSession = $customerSession;
         $this->storeManager = $storeManager;
     }
@@ -115,7 +110,7 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
             $customer = $this->customerSession->getCustomer();
         }
 
-        return $this->observer->is2faConfiguredForCustomer($customer);
+        return $this->tfaCheck->is2faConfiguredForCustomer($customer);
     }
 
     public function getCancelSetupUrl()

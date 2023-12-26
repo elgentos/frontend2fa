@@ -5,6 +5,10 @@
     </event>
     <event name="customer_logout">
         <observer name="customer_2fa_check_logout"
-                  instance="Elgentos\Frontend2FA\Observer\CustomerAuthObserver" />
+                  instance="Elgentos\Frontend2FA\Observer\CustomerLogoutObserver" />
+    </event>
+    <event name="customer_login">
+        <observer name="customer_2fa_check_logoin"
+                  instance="Elgentos\Frontend2FA\Observer\CustomerLoginObserver" />
     </event>
 </config>
