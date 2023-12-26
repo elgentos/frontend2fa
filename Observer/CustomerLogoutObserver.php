@@ -12,7 +12,7 @@ namespace Elgentos\Frontend2FA\Observer;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Event\ObserverInterface;
 
-class CustomerAuthObserver implements ObserverInterface
+class CustomerLogoutObserver implements ObserverInterface
 {
     public function __construct(
         private readonly Session $customerSession
