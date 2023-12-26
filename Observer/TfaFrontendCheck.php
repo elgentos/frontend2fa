@@ -9,6 +9,7 @@ use Magento\Framework\App\Response\Http;
 use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\UrlInterface;
+use Magento\Framework\App\RequestInterface;
 
 class TfaFrontendCheck implements ObserverInterface
 {
@@ -58,7 +59,8 @@ class TfaFrontendCheck implements ObserverInterface
         SecretFactory $secretFactory,
         Session $customerSession,
         UrlInterface $url,
-        \Magento\Framework\Message\ManagerInterface $messageManager
+        \Magento\Framework\Message\ManagerInterface $messageManager,
+        private readonly RequestInterface $request
     ) {
         $this->url = $url;
         $this->redirect = $redirect;
@@ -88,7 +90,7 @@ class TfaFrontendCheck implements ObserverInterface
             return $this;
         }
 
-        if (in_array($observer->getEvent()->getRequest()->getFullActionName(), $this->getAllowedRoutes($customer))) {
+        if (in_array($this->request->getFullActionName(), $this->getAllowedRoutes($customer))) {
             return $this;
         }
 
