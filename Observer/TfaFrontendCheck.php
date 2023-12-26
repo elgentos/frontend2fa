@@ -10,6 +10,7 @@ use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\App\RequestInterface;
+use Psr\Log\LoggerInterface;
 
 class TfaFrontendCheck implements ObserverInterface
 {
@@ -60,7 +61,8 @@ class TfaFrontendCheck implements ObserverInterface
         Session $customerSession,
         UrlInterface $url,
         \Magento\Framework\Message\ManagerInterface $messageManager,
-        private readonly RequestInterface $request
+        private readonly RequestInterface $request,
+        private readonly LoggerInterface $logger
     ) {
         $this->url = $url;
         $this->redirect = $redirect;
@@ -81,22 +83,27 @@ class TfaFrontendCheck implements ObserverInterface
         }
 
         if ($this->customerSession->get2faSuccessful()) {
+            $this->logger->info('TfaFrontendCheck get2faSuccessful true');
             return $this;
         }
 
         /** @var \Magento\Customer\Model\Customer $customer */
         $customer = $this->customerSession->getCustomer();
         if (!$customer->getId() || !$this->customerSession->isLoggedIn()) {
+            $this->logger->info('TfaFrontendCheck isLoggedIn false');
             return $this;
         }
-
+        $this->logger->info('TfaFrontendCheck isLoggedIn true');
         if (in_array($this->request->getFullActionName(), $this->getAllowedRoutes($customer))) {
+            $this->logger->info('TfaFrontendCheck getAllowedRoutes true');
             return $this;
         }
 
         if ($this->is2faConfiguredForCustomer($customer)) {
+            $this->logger->info('TfaFrontendCheck is2faConfiguredForCustomer true');
             // Redirect to 2FA authentication page
             $redirectionUrl = $this->url->getUrl(self::FRONTEND_2_FA_ACCOUNT_AUTHENTICATE_PATH);
+            $this->logger->info('TfaFrontendCheck is2faConfiguredForCustomer redirect',[$redirectionUrl]);
             $this->redirect->setRedirect($redirectionUrl);
         } elseif ($this->isCustomerInForced2faGroup($customer)) {
             // Redirect to 2FA setup page
@@ -107,6 +114,7 @@ class TfaFrontendCheck implements ObserverInterface
 
         $currentPage = $this->url->getUrl('*/*/*');
         if ($currentPage && str_contains($currentPage, 'checkout')) {
+            $this->logger->info('TfaFrontendCheck checkout redirect',[$currentPage]);
             $this->customerSession->setBefore2faUrl($currentPage);
         }
 
