@@ -2,30 +2,27 @@
 
 namespace Elgentos\Frontend2FA\Observer;
 
+use Elgentos\Frontend2FA\Api\ConfigInterface;
 use Elgentos\Frontend2FA\Model\SecretFactory;
 use Magento\Customer\Model\Session;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Response\Http;
 use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\UrlInterface;
+use Magento\Framework\App\RequestInterface;
+use Psr\Log\LoggerInterface;
 
 class TfaFrontendCheck implements ObserverInterface
 {
-    const ELGENTOS_AUTHENTICATOR_GENERAL_ENABLE = 'elgentos_authenticator/general/enable';
-    const ELGENTOS_AUTHENTICATOR_GENERAL_FORCED_GROUPS = 'elgentos_authenticator/general/forced_groups';
-
     const FRONTEND_2_FA_ACCOUNT_SETUP_ROUTE = 'elgentos_frontend2fa_frontend_route_account_setup';
     const FRONTEND_2_FA_ACCOUNT_AUTHENTICATE_ROUTE = 'elgentos_frontend2fa_frontend_route_account_authenticate';
     const CUSTOMER_ACCOUNT_LOGOUT_ROUTE = 'customer_account_logout';
+    const CUSTOMER_LOAD_SECTION = 'customer_section_load';
 
     const FRONTEND_2_FA_ACCOUNT_SETUP_PATH = 'frontend2fa/account/setup';
     const FRONTEND_2_FA_ACCOUNT_AUTHENTICATE_PATH = 'frontend2fa/account/authenticate';
 
-    /**
-     * @var ScopeConfigInterface
-     */
-    public $config;
+
     /**
      * @var UrlInterface
      */
@@ -58,14 +55,15 @@ class TfaFrontendCheck implements ObserverInterface
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      */
     public function __construct(
-        ScopeConfigInterface $config,
+        private readonly ConfigInterface $config,
         Http $redirect,
         SecretFactory $secretFactory,
         Session $customerSession,
         UrlInterface $url,
-        \Magento\Framework\Message\ManagerInterface $messageManager
+        \Magento\Framework\Message\ManagerInterface $messageManager,
+        private readonly RequestInterface $request,
+        private readonly LoggerInterface $logger
     ) {
-        $this->config = $config;
         $this->url = $url;
         $this->redirect = $redirect;
         $this->secretFactory = $secretFactory;
@@ -80,33 +78,44 @@ class TfaFrontendCheck implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        if (!$this->config->getValue(self::ELGENTOS_AUTHENTICATOR_GENERAL_ENABLE, \Magento\Store\Model\ScopeInterface::SCOPE_STORE)) {
+        if (!$this->config->isEnabled()) {
             return $this;
         }
 
         if ($this->customerSession->get2faSuccessful()) {
+            $this->logger->info('TfaFrontendCheck get2faSuccessful true');
             return $this;
         }
 
         /** @var \Magento\Customer\Model\Customer $customer */
         $customer = $this->customerSession->getCustomer();
         if (!$customer->getId() || !$this->customerSession->isLoggedIn()) {
+            $this->logger->info('TfaFrontendCheck isLoggedIn false');
             return $this;
         }
-
-        if (in_array($observer->getEvent()->getRequest()->getFullActionName(), $this->getAllowedRoutes($customer))) {
+        $this->logger->info('TfaFrontendCheck isLoggedIn true');
+        if (in_array($this->request->getFullActionName(), $this->getAllowedRoutes($customer))) {
+            $this->logger->info('TfaFrontendCheck getAllowedRoutes true');
             return $this;
         }
 
         if ($this->is2faConfiguredForCustomer($customer)) {
+            $this->logger->info('TfaFrontendCheck is2faConfiguredForCustomer true');
             // Redirect to 2FA authentication page
             $redirectionUrl = $this->url->getUrl(self::FRONTEND_2_FA_ACCOUNT_AUTHENTICATE_PATH);
+            $this->logger->info('TfaFrontendCheck is2faConfiguredForCustomer redirect',[$redirectionUrl]);
             $this->redirect->setRedirect($redirectionUrl);
         } elseif ($this->isCustomerInForced2faGroup($customer)) {
             // Redirect to 2FA setup page
             $this->messageManager->addNoticeMessage(__('You need to set up Two Factor Authentication before continuing.'));
             $redirectionUrl = $this->url->getUrl(self::FRONTEND_2_FA_ACCOUNT_SETUP_PATH);
             $this->redirect->setRedirect($redirectionUrl);
+        }
+
+        $currentPage = $this->url->getUrl('*/*/*');
+        if ($currentPage && str_contains($currentPage, 'checkout')) {
+            $this->logger->info('TfaFrontendCheck checkout redirect',[$currentPage]);
+            $this->customerSession->setBefore2faUrl($currentPage);
         }
 
         return $this;
@@ -117,7 +126,7 @@ class TfaFrontendCheck implements ObserverInterface
      */
     public function getForced2faCustomerGroups()
     {
-        $forced2faCustomerGroups = $this->config->getValue(self::ELGENTOS_AUTHENTICATOR_GENERAL_FORCED_GROUPS, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        $forced2faCustomerGroups = $this->config->getValue(self::ELGENTOS_AUTHENTICATOR_GENERAL_FORCED_GROUPS, \Magento\Store\Model\ScopeInterface::SCOPE_STORE) ?? '';
 
         return array_filter(array_map('trim', explode(',', $forced2faCustomerGroups)));
     }
@@ -129,7 +138,7 @@ class TfaFrontendCheck implements ObserverInterface
      */
     public function isCustomerInForced2faGroup(\Magento\Customer\Model\Customer $customer)
     {
-        return in_array($customer->getGroupId(), $this->getForced2faCustomerGroups());
+        return in_array($customer->getGroupId(), $this->config->getForced2faCustomerGroups());
     }
 
     /**
@@ -155,8 +164,10 @@ class TfaFrontendCheck implements ObserverInterface
         } else {
             $routes = [self::FRONTEND_2_FA_ACCOUNT_SETUP_ROUTE];
         }
+
         // Customer should always be able to log out
         $routes[] = self::CUSTOMER_ACCOUNT_LOGOUT_ROUTE;
+        $routes[] = self::CUSTOMER_LOAD_SECTION;
 
         return $routes;
     }

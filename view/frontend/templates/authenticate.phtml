@@ -16,6 +16,12 @@
                                 </div>
                             </fieldset>
                             <div class="actions-toolbar">
+                                <div style="margin-right: 5px;" class="primary">
+                                    <button type="reset" title="<?php /* @escapeNotVerified */ echo __('Cancel') ?>" onclick="location.href='<?=$escaper->escapeUrl($block->getCancel2faUrl())?>'" class="action">
+                                        <span><?php /* @escapeNotVerified */ echo __('Cancel') ?></span>
+                                    </button>
+                                </div>
+
                                 <div class="primary">
                                     <button type="submit" title="<?php /* @escapeNotVerified */ echo __('Authenticate') ?>" class="action submit primary">
                                         <span><?php /* @escapeNotVerified */ echo __('Authenticate') ?></span>

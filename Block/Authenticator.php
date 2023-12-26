@@ -8,6 +8,7 @@
 
 namespace Elgentos\Frontend2FA\Block;
 
+use Elgentos\Frontend2FA\Api\ConfigInterface;
 use Elgentos\Frontend2FA\Model\GoogleAuthenticatorService;
 use Elgentos\Frontend2FA\Observer\TfaFrontendCheck;
 use Magento\Catalog\Model\Session as CatalogSession;
@@ -55,6 +56,7 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
         TfaFrontendCheck $observer,
         Session $customerSession,
         StoreManagerInterface $storeManager,
+        private readonly ConfigInterface $config,
         array $data = []
     ) {
         parent::__construct($context, $googleAuthenticator, $session, $data);
@@ -72,7 +74,11 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
     public function getQrCodeBase64Image()
     {
         // Replace non-alphanumeric characters with dashes; Google Authenticator does not like spaces in the title
-        $title = preg_replace('/[^a-z0-9]+/i', '-', $this->storeManager->getWebsite()->getName().' 2FA Login');
+        $title = sprintf("%s %s: %s",
+            $this->storeManager->getWebsite()->getName(),
+            '2FA',
+            $this->customerSession->getCustomer()->getEmail()
+        );
         $imageData = base64_encode($this->googleAuthenticatorService->getQrCodeEndroid($title, $this->_googleSecret));
 
         return 'data:image/png;base64,'.$imageData;
@@ -110,5 +116,23 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
         }
 
         return $this->observer->is2faConfiguredForCustomer($customer);
+    }
+
+    public function getCancelSetupUrl()
+    {
+        return '/customer/account/';
+    }
+
+    public function getCancel2faUrl()
+    {
+        return '/customer/account/logout/';
+    }
+
+    public function isInForcedGroup(): bool {
+        $customer = $this->customerSession->getCustomer();
+        return in_array(
+            $customer->getGroupId(),
+            $this->config->getForced2faCustomerGroups()
+        );
     }
 }

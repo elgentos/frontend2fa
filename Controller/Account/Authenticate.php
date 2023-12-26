@@ -75,9 +75,13 @@ class Authenticate extends \Magento\Framework\App\Action\Action
         } else {
             $secret = $this->secretFactory->create()->load($this->_customerSession->getCustomerId(), 'customer_id')->getSecret();
             if ($this->_authenticateQRCode($secret, $post['code'])) {
-                $this->messageManager->addSuccessMessage(__('Two Factor Authentication successful'));
+                $redirectUrl = $this->_customerSession->getBefore2faUrl() ?? 'customer/account';
+                if (!str_contains($redirectUrl, 'checkout')) {
+                    $this->messageManager->addSuccessMessage(__('Two Factor Authentication successful'));
+                }
+
                 $this->_customerSession->set2faSuccessful(true);
-                $this->_redirect('customer/account');
+                $this->_redirect($redirectUrl);
             } else {
                 $this->messageManager->addErrorMessage(__('Two Factor Authentication code incorrect'));
                 $this->_customerSession->set2faSuccessful(false);
