@@ -7,4 +7,8 @@
         <observer name="customer_2fa_check_logout"
                   instance="Elgentos\Frontend2FA\Observer\CustomerAuthObserver" />
     </event>
+    <event name="customer_login">
+        <observer name="customer_2fa_login"
+                  instance="Elgentos\Frontend2FA\Observer\TfaFrontendCheck" />
+    </event>
 </config>
