@@ -98,25 +98,29 @@ class TfaFrontendCheck implements ObserverInterface
             $this->logger->info('TfaFrontendCheck getAllowedRoutes true');
             return $this;
         }
-
+        $currentPage = $this->url->getUrl('*/*/*');
+        if ($currentPage && str_contains($currentPage, 'checkout')) {
+            $this->logger->info('TfaFrontendCheck checkout redirect',[$currentPage]);
+            $this->customerSession->setBefore2faUrl($currentPage);
+        }
         if ($this->is2faConfiguredForCustomer($customer)) {
             $this->logger->info('TfaFrontendCheck is2faConfiguredForCustomer true');
             // Redirect to 2FA authentication page
             $redirectionUrl = $this->url->getUrl(self::FRONTEND_2_FA_ACCOUNT_AUTHENTICATE_PATH);
             $this->logger->info('TfaFrontendCheck is2faConfiguredForCustomer redirect',[$redirectionUrl]);
             $this->redirect->setRedirect($redirectionUrl);
+
+            return;
         } elseif ($this->isCustomerInForced2faGroup($customer)) {
             // Redirect to 2FA setup page
             $this->messageManager->addNoticeMessage(__('You need to set up Two Factor Authentication before continuing.'));
             $redirectionUrl = $this->url->getUrl(self::FRONTEND_2_FA_ACCOUNT_SETUP_PATH);
             $this->redirect->setRedirect($redirectionUrl);
+
+            return;
         }
 
-        $currentPage = $this->url->getUrl('*/*/*');
-        if ($currentPage && str_contains($currentPage, 'checkout')) {
-            $this->logger->info('TfaFrontendCheck checkout redirect',[$currentPage]);
-            $this->customerSession->setBefore2faUrl($currentPage);
-        }
+
 
         return $this;
     }
