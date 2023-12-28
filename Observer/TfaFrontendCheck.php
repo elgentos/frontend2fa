@@ -88,6 +88,7 @@ class TfaFrontendCheck implements ObserverInterface
             return $this;
         }
         $this->logger->info('TfaFrontendCheck isLoggedIn true');
+        $this->logger->info($observer->getEvent()->getRequest()->getFullActionName());
         if (in_array($observer->getEvent()->getRequest()->getFullActionName(),
             $this->tfaCheck->getAllowedRoutes($customer))
         ) {
