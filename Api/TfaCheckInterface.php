@@ -14,12 +14,12 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 interface TfaCheckInterface
 {
 
-    const FRONTEND_2_FA_ACCOUNT_SETUP_ROUTE = 'elgentos_frontend2fa_frontend_route_account_setup';
-    const FRONTEND_2_FA_ACCOUNT_AUTHENTICATE_ROUTE = 'elgentos_frontend2fa_frontend_route_account_authenticate';
+    const FRONTEND_2_FA_ACCOUNT_SETUP_ROUTE = 'customer_account_setup';
+    const FRONTEND_2_FA_ACCOUNT_AUTHENTICATE_ROUTE = 'customer_account_authenticate';
     const CUSTOMER_ACCOUNT_LOGOUT_ROUTE = 'customer_account_logout';
-    const FRONTEND_2_FA_ACCOUNT_SETUP_PATH = 'frontend2fa/account/setup';
-    const FRONTEND_2_FA_ACCOUNT_AUTHENTICATE_PATH = 'frontend2fa/account/authenticate';
-    
+    const FRONTEND_2_FA_ACCOUNT_SETUP_PATH = 'customer/account/setup';
+    const FRONTEND_2_FA_ACCOUNT_AUTHENTICATE_PATH = 'customer/account/authenticate';
+
     public function isCustomerInForced2faGroup(\Magento\Customer\Model\Customer $customer): bool;
 
     public function is2faConfiguredForCustomer(\Magento\Customer\Model\Customer $customer): bool;
