@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Customer\Model\Account\Redirect">
+        <plugin name="elgentos_account_redirect"
+                type="Elgentos\Frontend2FA\Plugin\AccountRedirectPlugin"/>
+    </type>
+    <type name="Magento\Customer\Controller\Account\LoginPost">
+        <plugin name="elgentos_tfa_login_post"
+                type="Elgentos\Frontend2FA\Plugin\LoginPostPlugin"/>
+    </type>
+</config>

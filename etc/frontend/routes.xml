@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
     <router id="standard">
-        <route id="elgentos_frontend2fa_frontend_route" frontName="frontend2fa">
-            <module name="Elgentos_Frontend2FA"/>
+        <route id="customer">
+            <module name="Elgentos_Frontend2FA" before="Magento_Customer"/>
         </route>
     </router>
 </config>

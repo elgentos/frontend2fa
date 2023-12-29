@@ -3,4 +3,8 @@
     <event name="controller_action_predispatch">
         <observer name="customer_2fa_check" instance="Elgentos\Frontend2FA\Observer\TfaFrontendCheck" />
     </event>
+    <event name="customer_logout">
+        <observer name="customer_2fa_check_logout"
+                  instance="Elgentos\Frontend2FA\Observer\CustomerLogoutObserver" />
+    </event>
 </config>

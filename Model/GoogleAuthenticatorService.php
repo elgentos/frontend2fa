@@ -3,6 +3,8 @@
 namespace Elgentos\Frontend2FA\Model;
 
 use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Encoding\Encoding;
 
 class GoogleAuthenticatorService extends \Neyamtux\Authenticator\Lib\PHPGangsta\GoogleAuthenticator
 {
@@ -27,12 +29,11 @@ class GoogleAuthenticatorService extends \Neyamtux\Authenticator\Lib\PHPGangsta\
         }
         $qrCode = new QrCode($text);
         $qrCode->setSize($size);
-        $qrCode->setWriterByName('png');
         $qrCode->setMargin(0);
-        $qrCode->setEncoding('UTF-8');
+        $qrCode->setEncoding(new Encoding('UTF-8'));
         $qrCode->setSize($size);
-        $qrCode->setText($text);
 
-        return $qrCode->writeString();
+        $writer = new PngWriter();
+        return $writer->write($qrCode)->getString();
     }
 }
