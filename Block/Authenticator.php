@@ -86,7 +86,7 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
      */
     public function getSetupFormAction()
     {
-        return $this->getUrl('frontend2fa/account/setup', ['_secure' => true]);
+        return $this->getUrl(TfaCheckInterface::FRONTEND_2_FA_ACCOUNT_SETUP_PATH, ['_secure' => true]);
     }
 
     /**
@@ -96,7 +96,7 @@ class Authenticator extends \Neyamtux\Authenticator\Block\Authenticator
      */
     public function getAuthenticateFormAction()
     {
-        return $this->getUrl('frontend2fa/account/authenticate', ['_secure' => true]);
+        return $this->getUrl(TfaCheckInterface::FRONTEND_2_FA_ACCOUNT_AUTHENTICATE_PATH, ['_secure' => true]);
     }
 
     /**

@@ -5,4 +5,8 @@
         <plugin name="elgentos_account_redirect"
                 type="Elgentos\Frontend2FA\Plugin\AccountRedirectPlugin"/>
     </type>
+    <type name="Magento\Customer\Controller\Account\LoginPost">
+        <plugin name="elgentos_tfa_login_post"
+                type="Elgentos\Frontend2FA\Plugin\LoginPostPlugin"/>
+    </type>
 </config>
