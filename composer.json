@@ -2,7 +2,7 @@
     "name": "elgentos/frontend2fa",
     "description": "Magento 2 Frontend 2FA implementation",
     "require": {
-        "juashyam/authenticator": "0.0.1",
+        "juashyam/authenticator": "dev-master",
         "endroid/qr-code": "*"
     },
     "type": "magento2-module",
