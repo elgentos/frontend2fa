@@ -89,8 +89,8 @@ class Authenticate extends \Magento\Framework\App\Action\Action
     /**
      * Authenticates QR code.
      *
-     * @param $secret
-     * @param $code
+     * @param     $secret
+     * @param     $code
      * @param int $clockTolerance
      *
      * @return string
