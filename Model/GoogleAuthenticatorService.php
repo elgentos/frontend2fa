@@ -3,11 +3,11 @@
 namespace Elgentos\Frontend2FA\Model;
 
 use Endroid\QrCode\Color\Color;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Endroid\QrCode\QrCode;
 use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
 
 class GoogleAuthenticatorService extends \Neyamtux\Authenticator\Lib\PHPGangsta\GoogleAuthenticator
 {
@@ -27,9 +27,7 @@ class GoogleAuthenticatorService extends \Neyamtux\Authenticator\Lib\PHPGangsta\
         $title = null,
         $params = []
     ) {
-        $size  = !empty($params['size']) && (int)$params['size'] > 0 ? (int)$params['size'] : 200;
-        $level = !empty($params['level']) && array_search($params['level'],
-            ['L', 'M', 'Q', 'H']) !== false ? $params['level'] : 'M';
+        $size = !empty($params['size']) && (int) $params['size'] > 0 ? (int) $params['size'] : 200;
 
         $text = sprintf('otpauth://totp/%s?secret=%s', $name, $secret);
         if (true === is_string($title)) {
