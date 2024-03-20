@@ -1,5 +1,5 @@
 {
-    "name": "peterschriever/frontend2fa",
+    "name": "elgentos/frontend2fa",
     "description": "Magento 2 Frontend 2FA implementation",
     "require": {
         "juashyam/authenticator": "dev-master",
