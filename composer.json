@@ -3,7 +3,7 @@
     "description": "Magento 2 Frontend 2FA implementation",
     "require": {
         "juashyam/authenticator": "dev-master",
-        "endroid/qr-code": "^3.9"
+        "endroid/qr-code": "^4.3.5"
     },
     "type": "magento2-module",
     "license": [
