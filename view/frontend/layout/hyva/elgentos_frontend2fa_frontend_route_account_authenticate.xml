@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <block template="Elgentos_Frontend2FA::hyva/authenticate.phtml" class="Elgentos\Frontend2FA\Block\Authenticator" name="authenticate" cacheable="false" />
+        </referenceContainer>
+        <referenceBlock name="root">
+            <action method="setHeaderTitle">
+                <argument translate="true" name="title" xsi:type="string">Two-Factor Authentication</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

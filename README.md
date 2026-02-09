@@ -7,7 +7,8 @@ This extension is based on [Neyamtux_Authenticator](https://github.com/juashyam/
 - 2FA is enforced for chosen customer groups meaning the customer has to either setup or authenticate before continuing after logging in;
 - All customers in any group can optionally set their own 2FA;
 - Open the customer in the backend to be able to reset the 2FA secret;
-- Dutch translation files.
+- Dutch translation files;
+- Hyva theme support with Tailwind CSS templates.
 
 ## Installation
 
@@ -17,6 +18,16 @@ php bin/magento module:enable Elgentos_Frontend2FA
 php bin/magento module:enable Neyamtux_Authenticator
 php bin/magento setup:upgrade
 ```
+
+## Hyva Theme Support
+
+This module includes Hyva-compatible templates that use Tailwind CSS classes. The Hyva templates are automatically loaded when a Hyva theme is active and provide the same functionality with Hyva's styling approach.
+
+The following Hyva templates are included:
+- `view/frontend/templates/hyva/setup.phtml` - Two-Factor Authentication setup page
+- `view/frontend/templates/hyva/authenticate.phtml` - Two-Factor Authentication login page
+
+The templates are responsive and use Tailwind utility classes for styling.
 
 ## Integration with other authentication systems
 
