@@ -2,7 +2,7 @@
     <?php if ($block->is2faConfiguredForCustomer()): ?>
     <div class="w-full bg-white shadow-md rounded-lg p-6">
         <div class="text-gray-700">
-            <p><?php echo __('Two-Factor Authentication already configured. Contact support if you wish to reset it.'); ?></p>
+            <p><?php echo $block->escapeHtml(__('Two-Factor Authentication already configured. Contact support if you wish to reset it.')); ?></p>
         </div>
     </div>
     <?php else: ?>
@@ -13,7 +13,7 @@
                  class="w-full max-w-xs mx-auto shadow-lg rounded-lg" />
         </div>
         <div class="w-full md:w-1/2">
-            <p class="mb-6 text-gray-700"><?php echo __('Download a 2FA app on your phone to scan the QR code and get the authentication code, for example Google Authenticator or Authy.'); ?></p>
+            <p class="mb-6 text-gray-700"><?php echo $block->escapeHtml(__('Download a 2FA app on your phone to scan the QR code and get the authentication code, for example Google Authenticator or Authy.')); ?></p>
             <div class="bg-white shadow-md rounded-lg p-6">
                 <form class="space-y-6" 
                       action="<?php /* @escapeNotVerified */ echo $block->getSetupFormAction(); ?>" 
