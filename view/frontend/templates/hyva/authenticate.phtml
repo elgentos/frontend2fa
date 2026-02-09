@@ -1,0 +1,44 @@
+<div class="container mx-auto px-4 py-8">
+    <?php if($block->is2faConfiguredForCustomer()): ?>
+        <div class="w-full bg-white shadow-md rounded-lg p-6">
+            <div class="max-w-lg mx-auto">
+                <p class="mb-6 text-gray-700"><?php echo __('Open your 2FA app (for example Google Authenticator or Authy) and enter the 6-digit code to log in.'); ?></p>
+                <div>
+                    <form class="space-y-6" 
+                          action="<?php /* @escapeNotVerified */ echo $block->getAuthenticateFormAction(); ?>" 
+                          method="post" 
+                          data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>">
+                        <input type="hidden" name="secret" value="<?php /* @escapeNotVerified */ echo $block->getSecretCode(); ?>" />
+                        <fieldset>
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700" for="code">
+                                    <span><?php /* @escapeNotVerified */ echo __('Authentication Code') ?></span>
+                                </label>
+                                <div>
+                                    <input name="code" 
+                                           id="code" 
+                                           title="<?php /* @escapeNotVerified */ echo __('Authentication Code') ?>" 
+                                           value="" 
+                                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                                           type="text" 
+                                           data-validate="{required:true}"/>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="flex justify-start">
+                            <button type="submit" 
+                                    title="<?php /* @escapeNotVerified */ echo __('Authenticate') ?>" 
+                                    class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors duration-200">
+                                <span><?php /* @escapeNotVerified */ echo __('Authenticate') ?></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?php else: ?>
+        <div class="w-full bg-white shadow-md rounded-lg p-6">
+            <p class="text-gray-700">You shouldn't be here.</p>
+        </div>
+    <?php endif; ?>
+</div>
