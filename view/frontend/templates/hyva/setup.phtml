@@ -19,6 +19,7 @@
                       action="<?php echo $block->escapeUrl($block->getSetupFormAction()); ?>" 
                       method="post" 
                       data-hasrequired="<?php echo $block->escapeHtmlAttr(__('* Required Fields')); ?>">
+                    <?php echo $block->getBlockHtml('formkey'); ?>
                     <input type="hidden" name="secret" value="<?php echo $block->escapeHtmlAttr($block->getSecretCode()); ?>" />
                     <fieldset>
                         <div class="space-y-2">
